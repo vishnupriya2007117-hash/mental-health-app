@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Saath – Mental Health Awareness & Helpline Directory</title>
+<meta name="description" content="Verified Indian mental health helplines, a breathing exercise, a quick check-in and a daily affirmation.">
+<style>
+:root{
+  --bg:#eef3ee; --bg2:#e2ece4; --surface:rgba(255,255,255,.72); --ink:#1f3a2f; --muted:#52695d;
+  --green:#2f7d57; --green-d:#1f5f40; --sage:#cfe3d4; --sand:#f3ede2; --line:rgba(31,58,47,.14);
+  --crisis:#b3261e; --amber:#ffe9b8; --amber-ink:#5c3d00; --radius:22px;
+  --font:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  --serif:Georgia,"Iowan Old Style","Times New Roman",serif;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);color:var(--ink);line-height:1.6;min-height:100vh;
+  background:radial-gradient(1000px 500px at 10% -10%,#d8eadd 0,transparent 60%),radial-gradient(900px 500px at 100% 0,#f3ede2 0,transparent 55%),var(--bg);}
+a{color:inherit}
+:focus-visible{outline:3px solid #1a73e8;outline-offset:3px;border-radius:8px}
+.skip{position:absolute;left:-999px}.skip:focus{left:12px;top:12px;background:#fff;padding:8px 12px;z-index:99}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px}
+
+/* Emergency banner */
+.crisis{position:sticky;top:0;z-index:50;background:linear-gradient(90deg,var(--crisis),#c9511a);color:#fff;box-shadow:0 4px 18px rgba(179,38,30,.3)}
+.crisis .wrap{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding-top:10px;padding-bottom:10px}
+.crisis p{font-weight:600;font-size:.95rem}
+.crisis .btns{display:flex;gap:8px;flex-wrap:wrap}
+.crisis a.call{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--crisis);font-weight:700;text-decoration:none;padding:8px 16px;border-radius:999px;font-size:.92rem;min-height:40px}
+.crisis a.call.alt{background:var(--amber);color:var(--amber-ink)}
+.crisis a.call:hover{transform:translateY(-1px)}
+
+header.hero{padding:44px 0 18px}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,5.5vw,3.4rem);line-height:1.1;letter-spacing:-.01em;max-width:16ch}
+.hero p{margin-top:14px;max-width:58ch;color:var(--muted);font-size:1.05rem}
+nav.jump{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+nav.jump a{text-decoration:none;font-size:.9rem;padding:7px 14px;border-radius:999px;background:var(--surface);border:1px solid var(--line)}
+nav.jump a:hover{background:var(--sage)}
+
+.auth-shell{max-width:760px;margin:18px auto 0;background:rgba(255,255,255,.7); border:1px solid var(--line); border-radius:24px; padding:18px; box-shadow:0 12px 26px rgba(31,58,47,.08)}
+.auth-toggle{display:flex;gap:10px; background:#f6faf7; border-radius:14px; padding:8px; margin-bottom:18px; border:1px solid var(--line)}
+.auth-tab{flex:1; border:none; border-radius:12px; background:transparent; padding:12px 14px; font:inherit; font-weight:700; color:var(--muted); cursor:pointer}
+.auth-tab.active{background:var(--green); color:#fff; box-shadow:0 8px 18px rgba(47,125,87,.18)}
+.auth-panel{display:none}
+.auth-panel.active{display:block}
+.form-grid{display:grid;gap:14px}
+.field{display:grid;gap:8px}
+.field label{font-weight:600; color:var(--ink)}
+.field input{border:1.5px solid var(--line); border-radius:12px; min-height:48px; padding:0 14px; font:inherit; background:#fff}
+.auth-actions{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:10px}
+.auth-meta{font-size:.9rem; color:var(--muted)}
+.auth-note{font-size:.85rem; color:var(--muted); margin-top:10px}
+
+section{padding:30px 0}
+h2{font-family:var(--serif);font-weight:600;font-size:1.7rem;margin-bottom:6px}
+.sub{color:var(--muted);margin-bottom:18px;max-width:66ch}
+.glass{background:var(--surface);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.7);border-radius:var(--radius);box-shadow:0 10px 30px rgba(31,58,47,.09)}
+
+/* Directory */
+.tools{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:18px}
+.search{flex:1 1 260px;position:relative}
+.search input{width:100%;font:inherit;padding:13px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{font:inherit;font-size:.9rem;padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--green);border-color:var(--green);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px}
+.card{padding:20px;display:flex;flex-direction:column;gap:10px}
+.card h3{font-size:1.15rem}
+.tag{align-self:flex-start;font-size:.78rem;padding:3px 10px;border-radius:999px;background:var(--sand);color:#5a4a2b}
+.card p{color:var(--muted);font-size:.95rem}
+.meta{font-size:.88rem;display:grid;gap:3px}
+.meta b{font-weight:600}
+.callnow{margin-top:auto;display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;text-decoration:none;font-weight:700;padding:13px;border-radius:14px;min-height:48px}
+.callnow:hover{background:var(--green-d)}
+.empty{padding:26px;text-align:center;color:var(--muted)}
+.note{font-size:.85rem;color:var(--muted);margin-top:14px}
+
+/* Two-column tools */
+.duo{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:900px){.duo{grid-template-columns:1fr 1fr}}
+.panel{padding:26px}
+
+/* Breathing */
+.breath{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center}
+.stage{position:relative;width:240px;height:240px;display:grid;place-items:center}
+.ring{position:absolute;inset:0;transform:rotate(-90deg)}
+.ring circle{fill:none;stroke-width:8}
+.ring .track{stroke:var(--sage)}
+.ring .prog{stroke:var(--green);stroke-linecap:round}
+.orb{width:150px;height:150px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#bfe3cb,var(--green));
+  box-shadow:0 0 0 12px rgba(47,125,87,.12),0 14px 40px rgba(47,125,87,.35);display:grid;place-items:center;color:#fff;
+  transform:scale(.62);transition:transform 4s linear}
+.orb span{font-family:var(--serif);font-size:2.4rem}
+.phase{font-family:var(--serif);font-size:1.5rem;min-height:2rem}
+.btn{font:inherit;font-weight:600;cursor:pointer;border:none;border-radius:999px;padding:12px 24px;min-height:46px;background:var(--green);color:#fff}
+.btn:hover{background:var(--green-d)}
+.btn.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+/* Screener */
+fieldset{border:none;padding:0;margin:0 0 18px}
+legend{font-weight:600;margin-bottom:8px}
+.opts{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:520px){.opts{grid-template-columns:repeat(4,1fr)}}
+.opts label{position:relative;cursor:pointer}
+.opts input{position:absolute;opacity:0}
+.opts span{display:block;text-align:center;font-size:.85rem;padding:10px 6px;border:1.5px solid var(--line);border-radius:12px;background:#fff;min-height:48px}
+.opts input:checked+span{background:var(--green);border-color:var(--green);color:#fff}
+.opts input:focus-visible+span{outline:3px solid #1a73e8;outline-offset:2px}
+.score{display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 14px}
+.score div{flex:1 1 120px;background:#fff;border-radius:14px;padding:10px 14px;border:1px solid var(--line)}
+.score b{font-size:1.5rem;font-family:var(--serif)}
+.result{border-radius:16px;padding:16px;background:var(--sage)}
+.result.high{background:var(--amber);color:var(--amber-ink)}
+.result a{display:inline-block;margin-top:10px;background:var(--crisis);color:#fff;text-decoration:none;font-weight:700;padding:10px 18px;border-radius:999px}
+
+/* Quote */
+.quote{text-align:center;padding:34px 22px}
+blockquote{font-family:var(--serif);font-size:clamp(1.25rem,3vw,1.8rem);line-height:1.4;max-width:34ch;margin:0 auto 10px}
+.quote cite{display:block;color:var(--muted);margin-bottom:18px}
+.status{font-size:.82rem;color:var(--muted);margin-top:10px;min-height:1.2em}
+
+footer{padding:30px 0 50px;color:var(--muted);font-size:.88rem}
+footer p+p{margin-top:8px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#directory">Skip to helplines</a>
+
+<div class="crisis" role="region" aria-label="Emergency help">
+  <div class="wrap">
+    <p>In crisis or in danger right now? Please call for help.</p>
+    <div class="btns">
+      <a class="call" href="tel:112" aria-label="Call emergency number 112">&#9742; Emergency 112</a>
+      <a class="call alt" href="tel:14416" aria-label="Call Tele-MANAS 14416">&#9742; Tele-MANAS 14416</a>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>You don't have to carry this alone.</h1>
+    <p>Find a free, trusted helpline in India, take a minute to breathe, check in with how you're feeling, and read something kind. Everything here runs privately in your browser.</p>
+    <nav class="jump" aria-label="Page sections">
+      <a href="#directory">Helplines</a><a href="#breathe">Breathe</a><a href="#checkin">Check-in</a><a href="#affirm">Affirmation</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="auth-shell" aria-label="Account access">
+    <div class="auth-toggle" role="tablist" aria-label="Authentication toggle">
+      <button class="auth-tab active" type="button" data-mode="login" role="tab" aria-selected="true">Login</button>
+      <button class="auth-tab" type="button" data-mode="signup" role="tab" aria-selected="false">Sign Up</button>
+    </div>
+
+    <div id="login-panel" class="auth-panel active" role="tabpanel">
+      <form id="loginForm" class="form-grid">
+        <div class="field">
+          <label for="loginEmail">Email address</label>
+          <input id="loginEmail" type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label for="loginPassword">Password</label>
+          <input id="loginPassword" type="password" placeholder="Enter your password" required>
+        </div>
+        <div class="auth-actions">
+          <label class="auth-meta"><input type="checkbox"> Keep me signed in</label>
+          <button class="btn" type="submit">Login</button>
+        </div>
+      </form>
+      <p class="auth-note">This opens your email app to complete the login request.</p>
+    </div>
+
+    <div id="signup-panel" class="auth-panel" role="tabpanel">
+      <form id="signupForm" class="form-grid">
+        <div class="field">
+          <label for="signupName">Full name</label>
+          <input id="signupName" type="text" placeholder="Your name" required>
+        </div>
+        <div class="field">
+          <label for="signupEmail">Email address</label>
+          <input id="signupEmail" type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="field">
+          <label for="signupPassword">Password</label>
+          <input id="signupPassword" type="password" placeholder="Create a password" required>
+        </div>
+        <div class="auth-actions">
+          <label class="auth-meta"><input type="checkbox" required> I agree to the terms</label>
+          <button class="btn" type="submit">Create account</button>
+        </div>
+      </form>
+      <p class="auth-note">This opens your email app with a pre-filled signup request.</p>
+    </div>
+  </section>
+</div>
+
+<main class="wrap">
+  <section id="directory" aria-labelledby="dir-h" style="display:none;">
+    <h2 id="dir-h">Helpline directory</h2>
+    <p class="sub">Search by name or by what you're going through, or filter by category. Tap Call Now to dial from your phone.</p>
+    <div class="tools">
+      <div class="search"><input id="q" type="search" placeholder="Search e.g. exam stress, anxiety, Kannada" aria-label="Search helplines"></div>
+      <div class="chips" id="chips" role="group" aria-label="Filter by category"></div>
+    </div>
+    <div class="grid" id="list" aria-live="polite"></div>
+    <p class="note">Numbers and timings can change. If a line doesn't connect, try another one or call 112 in an emergency. Please confirm details on each organisation's official site before relying on them.</p>
+  </section>
+
+  <div class="duo">
+    <section id="breathe" aria-labelledby="br-h">
+      <div class="glass panel breath">
+        <div><h2 id="br-h">Box breathing</h2>
+        <p class="sub" style="margin:0 auto">Breathe in for 4, hold for 4, breathe out for 4, hold for 4. Follow the circle.</p></div>
+        <div class="stage">
+          <svg class="ring" viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="track" cx="50" cy="50" r="46"/>
+            <circle class="prog" id="prog" cx="50" cy="50" r="46" stroke-dasharray="289.03" stroke-dashoffset="289.03"/>
+          </svg>
+          <div class="orb" id="orb"><span id="count">4</span></div>
+        </div>
+        <div class="phase" id="phase" role="status" aria-live="polite">Ready when you are</div>
+        <div class="row">
+          <button class="btn" id="play" aria-pressed="false">Start</button>
+          <button class="btn ghost" id="reset">Reset</button>
+        </div>
+        <p class="note" style="margin:0">Rounds completed: <b id="rounds">0</b></p>
+      </div>
+    </section>
+
+    <section id="checkin" aria-labelledby="ck-h">
+      <div class="glass panel">
+        <h2 id="ck-h">Quick check-in</h2>
+        <p class="sub">Over the last 2 weeks, how often have you been bothered by the following? This is the PHQ-2 and GAD-2, a screening aid, not a diagnosis.</p>
+        <form id="screener" onsubmit="return false">
+          <div id="qs"></div>
+        </form>
+        <div class="score" aria-live="polite">
+          <div>Low mood (PHQ-2)<br><b id="sPhq">0</b> / 6</div>
+          <div>Anxiety (GAD-2)<br><b id="sGad">0</b> / 6</div>
+        </div>
+        <div class="result" id="result" aria-live="polite">Answer the questions above and your guidance will appear here.</div>
+      </div>
+    </section>
+  </div>
+
+  <section id="affirm" aria-labelledby="af-h">
+    <div class="glass quote">
+      <h2 id="af-h">A thought for today</h2>
+      <p class="sub" style="margin:0 auto 18px">Tap the button for a fresh quote.</p>
+      <blockquote id="qText">"Take it one breath at a time."</blockquote>
+      <cite id="qAuth">Saath</cite>
+      <button class="btn" id="qBtn">New affirmation</button>
+      <p class="status" id="qStatus" role="status"></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Important:</b> This site offers awareness and contact information only. It is not medical advice, therapy or a diagnostic tool. If you or someone near you may be in danger, call 112 or Tele-MANAS 14416 immediately.</p>
+    <p>Built as an academic project. No data is collected, stored or sent anywhere except the quote request in the affirmation card.</p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+/* ---------- Helpline data ---------- */
+const HELPLINES = [
+  {name:"Tele-MANAS",cat:"Crisis Intervention",tel:"14416",display:"14416 (also 1800-891-4416)",
+   desc:"Government of India's free, confidential tele-mental health service with trained counsellors and referral to specialists.",
+   time:"24 hours, 7 days a week",lang:"20+ Indian languages",issues:"crisis suicidal thoughts anxiety depression stress emotional support"},
+  {name:"KIRAN",cat:"Crisis Intervention",tel:"18005990019",display:"1800-599-0019",
+   desc:"National mental health rehabilitation helpline from the Ministry of Social Justice and Empowerment. Support for distress, anxiety and depression.",
+   time:"24 hours, 7 days a week",lang:"13 languages incl. Hindi, English, Tamil, Telugu, Kannada, Bengali, Marathi",issues:"crisis stress anxiety depression suicidal thoughts rehabilitation"},
+  {name:"Vandrevala Foundation",cat:"Anxiety/Depression",tel:"+919999666555",display:"+91 9999 666 555",
+   desc:"Free counselling by phone and WhatsApp for anxiety, depression, relationship strain and emotional distress.",
+   time:"24 hours, 7 days a week",lang:"English, Hindi and several regional languages",issues:"anxiety depression stress relationship loneliness whatsapp"},
+  {name:"AASRA",cat:"Crisis Intervention",tel:"+919820466726",display:"+91 98204 66726",
+   desc:"Mumbai-based non-profit offering confidential support to people in emotional crisis or having suicidal thoughts.",
+   time:"24 hours, 7 days a week",lang:"English, Hindi",issues:"crisis suicidal thoughts loneliness emotional support"},
+  {name:"Parivarthan",cat:"Student Stress",tel:"+917676602602",display:"+91 7676 602 602",
+   desc:"Bengaluru-based counselling helpline for young people and adults dealing with academic pressure, stress, anxiety and relationships.",
+   time:"Mon to Fri, 4 pm to 10 pm",lang:"English, Hindi, Kannada",issues:"student exam academic stress anxiety relationship youth counselling"}
+];
+const CATS = ["All","Crisis Intervention","Student Stress","Anxiety/Depression"];
+let activeCat = "All";
+
+const authTabs = document.querySelectorAll('.auth-tab');
+const authPanels = document.querySelectorAll('.auth-panel');
+
+authTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const mode = tab.dataset.mode;
+    authTabs.forEach(item => {
+      const isActive = item === tab;
+      item.classList.toggle('active', isActive);
+      item.setAttribute('aria-selected', String(isActive));
+    });
+    authPanels.forEach(panel => {
+      panel.classList.toggle('active', panel.id === `${mode}-panel`);
+    });
+  });
+});
+
+const authShell = document.querySelector('.auth-shell');
+const directoryPage = document.getElementById('directory');
+
+function showDirectoryAfterAuth() {
+  authShell.style.display = 'none';
+  directoryPage.style.display = 'block';
+  document.querySelector('header.hero').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.getElementById('loginForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+  if (!password) {
+    alert('Please enter your password.');
+    return;
+  }
+
+  const subject = encodeURIComponent('MindCare Login Request');
+  const body = encodeURIComponent(`Hi, I would like to log in to MindCare using ${email}. Please confirm my access or share login instructions.`);
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  setTimeout(showDirectoryAfterAuth, 800);
+});
+
+document.getElementById('signupForm').addEventListener('submit', function (event) {
+  event.preventDefault();
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value.trim();
+
+  if (!name) {
+    alert('Please enter your full name.');
+    return;
+  }
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    alert('Please enter a valid email address.');
+    return;
+  }
+  if (!password) {
+    alert('Please create a password.');
+    return;
+  }
+
+  const subject = encodeURIComponent('MindCare Sign Up Request');
+  const body = encodeURIComponent(`Hi, my name is ${name}. I would like to create a free MindCare account using ${email}. Please confirm my signup.`);
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+  setTimeout(showDirectoryAfterAuth, 800);
+});
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function renderChips(){
+  $("chips").innerHTML = CATS.map(c=>`<button class="chip" type="button" aria-pressed="${c===activeCat}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+}
+function renderList(){
+  const q = $("q").value.trim().toLowerCase();
+  const items = HELPLINES.filter(h=>(activeCat==="All"||h.cat===activeCat) &&
+    (!q || (h.name+" "+h.desc+" "+h.cat+" "+h.issues+" "+h.lang).toLowerCase().includes(q)));
+  $("list").innerHTML = items.length ? items.map(h=>`
+    <article class="glass card">
+      <span class="tag">${esc(h.cat)}</span>
+      <h3>${esc(h.name)}</h3>
+      <p>${esc(h.desc)}</p>
+      <div class="meta"><div><b>Number:</b> ${esc(h.display)}</div><div><b>Timings:</b> ${esc(h.time)}</div><div><b>Languages:</b> ${esc(h.lang)}</div></div>
+      <a class="callnow" href="tel:${h.tel}" aria-label="Call ${esc(h.name)} now">&#9742; Call Now</a>
+    </article>`).join("")
+    : `<div class="glass empty" style="grid-column:1/-1">No helplines match that search. Try a different word, or choose "All". If you need help right now, call Tele-MANAS on 14416.</div>`;
+}
+$("chips").addEventListener("click",e=>{const b=e.target.closest(".chip");if(!b)return;activeCat=b.dataset.c;renderChips();renderList();});
+$("q").addEventListener("input",renderList);
+renderChips();renderList();
+
+/* ---------- Box breathing ---------- */
+const PHASES=[{t:"Breathe in",scale:1},{t:"Hold",scale:1},{t:"Breathe out",scale:.62},{t:"Hold",scale:.62}];
+const orb=$("orb"),prog=$("prog"),CIRC=289.03;
+let running=false,phaseIdx=0,sec=4,timer=null,rounds=0;
+function setOrb(scale,dur){orb.style.transition=`transform ${dur}s linear`;orb.style.transform=`scale(${scale})`;}
+function setPhase(i){
+  phaseIdx=i;sec=4;
+  $("phase").textContent=PHASES[i].t;$("count").textContent=4;
+  if(i===0||i===2)setOrb(PHASES[i].scale,4);
+  const total=(i+1)/4;
+  prog.style.transition="stroke-dashoffset 4s linear";
+  prog.style.strokeDashoffset=CIRC*(1-total);
+}
+function tick(){
+  sec--;
+  if(sec>0){$("count").textContent=sec;return;}
+  if(phaseIdx===3){
+    rounds++;$("rounds").textContent=rounds;
+    prog.style.transition="none";prog.style.strokeDashoffset=CIRC;void prog.getBoundingClientRect();
+    setPhase(0);
+  } else setPhase(phaseIdx+1);
+}
+function start(){
+  running=true;$("play").textContent="Pause";$("play").setAttribute("aria-pressed","true");
+  if($("phase").textContent==="Ready when you are"||$("phase").textContent==="Paused"){
+    requestAnimationFrame(()=>setPhase(phaseIdx));
+  }
+  timer=setInterval(tick,1000);
+}
+function pause(){
+  running=false;clearInterval(timer);$("play").textContent="Resume";$("play").setAttribute("aria-pressed","false");
+  const cs=getComputedStyle(orb).transform;orb.style.transition="none";orb.style.transform=cs;
+  prog.style.transition="none";prog.style.strokeDashoffset=getComputedStyle(prog).strokeDashoffset;
+  $("phase").textContent="Paused";
+}
+function resetBreath(){
+  running=false;clearInterval(timer);phaseIdx=0;sec=4;rounds=0;
+  $("rounds").textContent=0;$("count").textContent=4;$("phase").textContent="Ready when you are";
+  $("play").textContent="Start";$("play").setAttribute("aria-pressed","false");
+  setOrb(.62,.6);prog.style.transition="none";prog.style.strokeDashoffset=CIRC;
+}
+$("play").addEventListener("click",()=>running?pause():start());
+$("reset").addEventListener("click",resetBreath);
+
+/* ---------- PHQ-2 / GAD-2 ---------- */
+const QUESTIONS=[
+  {id:"p1",g:"phq",t:"Little interest or pleasure in doing things"},
+  {id:"p2",g:"phq",t:"Feeling down, depressed or hopeless"},
+  {id:"g1",g:"gad",t:"Feeling nervous, anxious or on edge"},
+  {id:"g2",g:"gad",t:"Not being able to stop or control worrying"}
+];
+const OPTS=["Not at all","Several days","More than half the days","Nearly every day"];
+$("qs").innerHTML=QUESTIONS.map(q=>`
+  <fieldset><legend>${q.t}</legend>
+  <div class="opts">${OPTS.map((o,i)=>`<label><input type="radio" name="${q.id}" value="${i}"><span>${i} &middot; ${o}</span></label>`).join("")}</div></fieldset>`).join("");
+
+function updateScore(){
+  const val=n=>{const c=document.querySelector(`input[name="${n}"]:checked`);return c?+c.value:null;};
+  let phq=0,gad=0,answered=0;
+  QUESTIONS.forEach(q=>{const v=val(q.id);if(v!==null){answered++;q.g==="phq"?phq+=v:gad+=v;}});
+  $("sPhq").textContent=phq;$("sGad").textContent=gad;
+  const r=$("result");
+  if(!answered){r.className="result";r.textContent="Answer the questions above and your guidance will appear here.";return;}
+  const high=phq>=3||gad>=3;
+  if(answered<4&&!high){r.className="result";r.textContent="Keep going when you're ready. Your running totals are shown above.";return;}
+  if(high){
+    r.className="result high";
+    r.innerHTML=`<p><b>Thank you for being honest with yourself.</b> Your answers suggest you may be carrying a lot of distress right now. A score like this isn't a diagnosis, but it is a good reason to talk to someone. Tele-MANAS offers free, confidential support at any hour, in your language.</p>
+    <a href="tel:14416">&#9742; Call Tele-MANAS 14416</a>
+    <p style="margin-top:10px;font-size:.9rem">If you feel unsafe or are thinking about harming yourself, call 112 right away.</p>`;
+  } else {
+    r.className="result";
+    r.innerHTML=`<p><b>Your scores are below the usual screening cut-off.</b> That's encouraging, though how you feel matters more than any number. Rest, movement, sleep and talking to someone you trust all help. If things change, you can always call Tele-MANAS on 14416.</p>`;
+  }
+}
+$("screener").addEventListener("change",updateScore);
+
+/* ---------- Daily affirmation (live API with fallbacks) ---------- */
+const LOCAL_QUOTES=[
+  ["You are allowed to be both a masterpiece and a work in progress.","Sophia Bush"],
+  ["Feelings are just visitors. Let them come and go.","Mooji"],
+  ["You don't have to see the whole staircase, just take the first step.","Martin Luther King Jr."],
+  ["Peace begins with a smile.","Mother Teresa"],
+  ["The only way out is through.","Robert Frost"],
+  ["Nothing can dim the light that shines from within.","Maya Angelou"],
+  ["Be gentle with yourself. You are doing the best you can.","Saath"],
+  ["It is okay to ask for help. That is a strength, not a weakness.","Saath"]
+];
+async function fetchJson(url,ms=5000){
+  const ctl=new AbortController();const t=setTimeout(()=>ctl.abort(),ms);
+  try{const r=await fetch(url,{signal:ctl.signal,cache:"no-store"});if(!r.ok)throw new Error(r.status);return await r.json();}
+  finally{clearTimeout(t);}
+}
+async function getQuote(){
+  try{
+    const d=await fetchJson("https://zenquotes.io/api/random");
+    if(Array.isArray(d)&&d[0]&&d[0].q&&!/too many requests/i.test(d[0].q))return{text:d[0].q,author:d[0].a,src:"ZenQuotes"};
+  }catch(e){}
+  try{
+    const d=await fetchJson("https://api.quotable.io/random?tags=inspirational|wisdom");
+    if(d&&d.content)return{text:d.content,author:d.author,src:"Quotable"};
+  }catch(e){}
+  const [text,author]=LOCAL_QUOTES[Math.floor(Math.random()*LOCAL_QUOTES.length)];
+  return{text,author,src:"offline"};
+}
+async function newQuote(){
+  const b=$("qBtn");b.disabled=true;b.textContent="Finding a quote...";$("qStatus").textContent="";
+  const q=await getQuote();
+  $("qText").textContent="\u201C"+q.text+"\u201D";
+  $("qAuth").textContent="\u2014 "+(q.author||"Unknown");
+  $("qStatus").textContent=q.src==="offline"?"You appear to be offline or the quote service is busy, so here's one saved in the app.":"Source: "+q.src;
+  b.disabled=false;b.textContent="New affirmation";
+}
+$("qBtn").addEventListener("click",newQuote);
+</script>
+</body>
+</html>
